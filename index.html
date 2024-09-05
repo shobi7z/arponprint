@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج معلومات الزبون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f0f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            text-align: right;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            direction: rtl;
+            text-align: right;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* تصميم الطباعة */
+        @media print {
+            body {
+                font-family: 'Cairo', sans-serif;
+                direction: rtl;
+                background-color: white;
+            }
+            .print-container {
+                padding: 40px;
+                margin: 0 auto;
+                width: 90%;
+                text-align: right;
+                direction: rtl;
+                background-color: #f9f9f9;
+            }
+            h1 {
+                font-size: 60px;
+                color: #007bff;
+                text-align: right;
+                margin-bottom: 30px;
+                font-family: 'Cairo', sans-serif;
+                font-weight: 600;
+                letter-spacing: 2px;
+            }
+            hr {
+                border: none;
+                height: 3px;
+                background-color: #007bff;
+                margin: 20px 0;
+            }
+            p {
+                font-size: 32px; /* تكبير حجم النص */
+                margin: 10px 0;
+                color: #333;
+                text-align: right;
+                line-height: 1.6;
+            }
+            .signature {
+                font-size: 28px; /* تكبير حجم التوقيع */
+                margin-top: 50px;
+                text-align: right;
+                color: #007bff;
+                font-weight: 600;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>نموذج معلومات الزبون</h2>
+        <form id="customerForm">
+        <label for="customerName">رقم الطلب:</label>
+            <input type="text" id="customernumber" required>
+            <label for="customerName">اسم الزبون:</label>
+            <input type="text" id="customerName" required>
+
+            <label for="customerAddress">عنوان الزبون:</label>
+            <input type="text" id="customerAddress" required>
+
+            <label for="customerPhone">رقم الزبون:</label>
+            <input type="text" id="customerPhone" required>
+
+            <label for="depositAmount">مبلغ العربون مع التوصيل:</label>
+            <input type="number" id="depositAmount" required>
+
+            <label for="currentDate">تاريخ اليوم:</label>
+            <input type="text" id="currentDate" readonly>
+
+            <button type="button" class="print-btn" onclick="printInfo()">طباعة</button>
+        </form>
+    </div>
+
+    <script>
+        // ملء تاريخ اليوم تلقائيًا
+        document.getElementById('currentDate').value = new Date().toLocaleDateString('ar-EG');
+
+        // وظيفة الطباعة
+        function printInfo() {
+            const customernumber = document.getElementById('customernumber').value;
+            const customerName = document.getElementById('customerName').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const depositAmount = document.getElementById('depositAmount').value;
+            const currentDate = document.getElementById('currentDate').value;
+
+            const printContent = `
+                <div class="print-container">
+                    <h1>vndr</h1>
+                    <hr>
+                    <p><strong>رقم الطلب:</strong> ${customernumber}</p>
+                    <p><strong>اسم الزبون:</strong> ${customerName}</p>
+                    <p><strong>عنوان الزبون:</strong> ${customerAddress}</p>
+                    <p><strong>رقم الزبون:</strong> ${customerPhone}</p>
+                    <p><strong>مبلغ العربون مع التوصيل:</strong> ${depositAmount}</p>
+                    <p><strong>تاريخ اليوم:</strong> ${currentDate}</p>
+                    <hr>
+                    <div class="signature">
+                        توقيع حسابات فندر
+                    </div>
+                </div>
+            `;
+
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write('<html><head><title>معلومات الزبون</title>');
+            printWindow.document.write('<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">');
+            printWindow.document.write('<style>@media print { body { font-family: "Cairo", sans-serif; direction: rtl; } }</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(printContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+
+</body>
+</html>
